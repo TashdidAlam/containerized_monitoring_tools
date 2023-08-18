@@ -1,0 +1,89 @@
+version: '3.8'
+
+# Prometheus Part
+services:
+  prometheus:
+    build:
+      context: .
+      dockerfile: pDockerfile
+    hostname: prometheus
+    container_name: prometheus
+    networks:
+      - private-network
+    ports:
+      - 9090:9090
+    volumes:
+      - prometheus-persistence:/usr/local/bin
+      - prometheus-persistence:/data
+
+
+# Grafana Part
+  grafana:
+    build:
+      context: .
+      dockerfile: gDockerfile
+    hostname: grafana
+    container_name: grafana
+    depends_on:
+      - prometheus
+    networks:
+      - private-network
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana-persistence:/usr/share/grafana
+
+
+# # Node Exporter Part
+#   node-exporter:
+#     image: bitnami/node-exporter:latest
+#     hostname: node-exporter
+#     container_name: node-exporter
+#     networks:
+#       - private-network
+#     ports:
+#       - 9100:9100
+
+
+# BlackBox Exporter Part
+  blackbox-exporter:
+    image: bitnami/blackbox-exporter:latest
+    hostname: blackbox-exporter
+    container_name: blackbox-exporter
+    networks:
+      - private-network
+    ports:
+      - 9115:9115
+
+# Alert Manager Part
+  alertmanager:
+    image: bitnami/alertmanager:latest
+    hostname: alertmanager
+    container_name: alertmanager
+    networks:
+      - private-network
+    ports:
+      - 9093:9093
+    volumes:
+      - ./alertmanager-persistence/data:/opt/bitnami/alertmanager/data
+      - ./alertmanager.yml:/opt/bitnami/alertmanager/conf/config.yml
+
+# Nginx Part 
+  nginx:
+    image: nginx:latest
+    hostname: nginx
+    container_name: nginx
+    networks:
+      - private-network
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+
+networks:
+  private-network:
+    driver: bridge
+
+volumes:
+  prometheus-persistence:
+  grafana-persistence:

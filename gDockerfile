@@ -1,0 +1,24 @@
+# Use Alpine Linux as the base image
+FROM alpine:latest
+
+# Label the maintainer
+LABEL maintainer="your_name"
+
+# Set the default Grafana version (can be overridden with build-arg)
+ARG GRAFANA_VERSION=10.0.3-r1
+
+# Install dependencies
+RUN apk --no-cache add ca-certificates
+
+# Download and install Grafana
+RUN apk update && apk add --repository="https://dl-cdn.alpinelinux.org/alpine/edge/community/" grafana=$GRAFANA_VERSION
+
+
+# Copy the custom grafana.ini
+COPY grafana.ini /usr/share/grafana/conf/custom.ini
+
+# Expose port 3000
+EXPOSE 3000
+
+# Define the command to run the application with the custom configuration and homepath
+CMD [ "sh", "-c", "$(find / -name grafana-server) -config /usr/share/grafana/conf/custom.ini -homepath /usr/share/grafana" ]

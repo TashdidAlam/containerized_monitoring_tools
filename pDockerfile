@@ -1,0 +1,37 @@
+# Base Image
+FROM alpine:latest
+
+# Package Update and Install Dependencies
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache curl && \
+    apk add wget
+
+# Adding Prometheus System Group & User
+RUN addgroup -S prometheus && \
+    adduser -S -s /sbin/nologin -G prometheus prometheus && \
+    mkdir /var/lib/prometheus && \
+    for i in rules rules.d files_sd; do mkdir -p /etc/prometheus/${i}; done
+
+# Download Prometheus & Extracting
+RUN mkdir -p /tmp/prometheus && \
+    cd /tmp/prometheus && \
+    curl -s https://api.github.com/repos/prometheus/prometheus/releases/latest \
+    | grep browser_download_url \
+    | grep linux-amd64 \
+    | cut -d '"' -f 4 \
+    | wget -qi - && \
+    tar xvf prometheus*.tar.gz && \
+    mv prometheus*/* /usr/local/bin/ && \
+    cd ~/ && \
+    rm -rf /tmp/prometheus
+
+# Copying Prometheus config file
+COPY prometheus.yml /etc/prometheus/
+COPY alert.rules /etc/prometheus
+
+# Port Exposing
+EXPOSE 9090
+
+# Starting Prometheus
+CMD ["prometheus", "--config.file=/etc/prometheus/prometheus.yml"]

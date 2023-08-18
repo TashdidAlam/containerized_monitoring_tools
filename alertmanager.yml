@@ -1,0 +1,41 @@
+# global:
+#   resolve_timeout: 5m
+
+# route:
+#   group_by: ['node-exporter-alerts', 'job']
+#   group_wait: 30s
+#   group_interval: 5m
+#   repeat_interval: 1h
+#   receiver: 'slack'
+
+# receivers:
+# - name: 'slack'
+#   slack_configs:
+#   - api_url: 'https://hooks.slack.com/services/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'
+#     channel: '#alert'
+#     send_resolved: true
+
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 1h
+  receiver: 'admin'  # Updated receiver name
+
+receivers:
+  - name: 'admin'  # Updated receiver name
+    email_configs:
+      - to: 'tashdid.alam@bjitgroup.com'
+        from: 'tashdid7068@gmail.com'
+        smarthost: smtp.gmail.com:587
+        auth_username: 'tashdid7068@gmail.com'
+        auth_identity: 'tashdid7068@gmail.com'
+        auth_password: 'fhedmoacmbloxidq'
+        send_resolved: true
+
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']
