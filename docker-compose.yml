@@ -68,6 +68,7 @@ services:
       - ./alertmanager-persistence/data:/opt/bitnami/alertmanager/data
       - ./alertmanager.yml:/opt/bitnami/alertmanager/conf/config.yml
     command:
+      - '--config.file=/opt/bitnami/alertmanager/conf/config.yml'
     # https://prometheus.io/docs/alerting/0.23/https/  
       - '--web.config.file=/etc/prometheus/web.yml'      
 
