@@ -35,6 +35,4 @@ COPY web.yml /etc/prometheus
 EXPOSE 9090
 
 # Starting Prometheus
-CMD ["prometheus", "--config.file=/etc/prometheus/prometheus.yml"]
-# CMD ["prometheus", "--web.enable-lifecycle"]
-# CMD ["prometheus", "--web.config.file=/etc/prometheus/web.yml"]
+CMD ["prometheus", "--config.file=/etc/prometheus/prometheus.yml", "--web.enable-lifecycle", "--web.config.file=/etc/prometheus/web.yml"]
