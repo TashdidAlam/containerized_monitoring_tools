@@ -15,9 +15,7 @@ services:
     volumes:
       - prometheus-persistence:/usr/local/bin
       - prometheus-persistence:/data
-    command:
-      - '--web.enable-lifecycle'
-      - '--web.config.file=/etc/prometheus/web.yml'
+
 
 # Grafana Part
   grafana:
