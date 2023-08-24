@@ -8,9 +8,9 @@ alerting:
     - static_configs:
         - targets:
           - alertmanager:9093
-        basic_auth:
-          username: admin
-          password: admin
+        # basic_auth:
+        #   username: admin
+        #   password: admin
 
 rule_files:
   - "alert.rules"
