@@ -29,6 +29,7 @@ RUN mkdir -p /tmp/prometheus && \
 # Copying Prometheus config file
 COPY prometheus.yml /etc/prometheus/
 COPY alert.rules /etc/prometheus
+COPY web.yml /etc/prometheus
 
 # Port Exposing
 EXPOSE 9090
