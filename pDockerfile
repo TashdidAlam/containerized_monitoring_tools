@@ -36,5 +36,5 @@ EXPOSE 9090
 
 # Starting Prometheus
 CMD ["prometheus", "--config.file=/etc/prometheus/prometheus.yml"]
-CMD ["prometheus", "--web.enable-lifecycle]
+CMD ["prometheus", "--web.enable-lifecycle"]
 CMD ["prometheus", "--web.config.file=/etc/prometheus/web.yml"]
