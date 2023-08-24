@@ -17,7 +17,7 @@ services:
       - prometheus-persistence:/data
     command:
       - '--web.enable-lifecycle'
-      - '--web.config.file=web.yml'
+      - '--web.config.file=/etc/prometheus/web.yml'
 
 # Grafana Part
   grafana:
@@ -71,7 +71,7 @@ services:
       - ./alertmanager.yml:/opt/bitnami/alertmanager/conf/config.yml
     command:
     # https://prometheus.io/docs/alerting/0.23/https/  
-      - '--web.config.file=web.yml'      
+      - '--web.config.file=/etc/prometheus/web.yml'      
 
 # Nginx Part 
   nginx:
